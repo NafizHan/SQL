@@ -37,9 +37,9 @@ select*from calisanlar;
 -- 3-) Maaşı ortalamanın altında olan çalışanların maaşına %20 zam yapınız. Komut sonrası görünüm aşağıdaki gibidir.
 update calisanlar
 set maas=maas*1.2
-where maas (select maas from calisanlar where maas<avg(maas));
+where maas< (select avg(maas) from (select maas from calisanlar)biseyler);
 
-select*from aileler;
+select*from calisanlar;
 
 
 -- 4-) Çalışanların isim ve cocuk_sayisi'ni listeleyen bir sorgu yazınız. Komut sonrası görünüm aşağıdaki gibidir.
@@ -60,5 +60,6 @@ select isim, cocuk_sayisi from calisanlar,aileler
     -- kisi_basi_gelir = toplam_gelir / cocuk_sayisi + 2 (anne ve baba)
     update calisanlar
     set maas=maas*1.1
-    where  maas=(calisanlar.maas + aileler.ek_gelir) /( cocuk_sayisi + 2 )  <2000;
-    
+    where  ( select (calisanlar.maas + aileler.ek_gelir) /( cocuk_sayisi + 2 ) from aileler where calisanlar.id=aileler.id)  <2000;
+   
+   select*from calisanlar
